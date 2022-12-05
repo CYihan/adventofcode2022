@@ -7,8 +7,31 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
     }
     const input = data.split('\n\n')
 
-    solve(input)
+    altSolve(input)
 })
+
+class Crate {
+
+    original
+    current
+
+    constructor(original) {
+        this.original=original
+        this.current = original
+    }
+
+    match(x,n) {
+        return x === this.current[0] && (this.current[1] >= 1 && this.current[1] <= n)
+    }
+
+    move(current) {
+        this.current = current
+    }
+
+    getCurrent(){
+        return this.current
+    }
+}
 
 
 
@@ -68,6 +91,94 @@ const solve = (input) => {
     }
 
     console.log(ans)
+}
+
+
+//Over engineering for fun, clean up later
+const altSolve = (input) =>{
+
+    const instructions = input[1].split('\n')
+    const reducedInstructions = instructions.map(l => {
+        const words = l.split(' ')
+        return [words[1], words[3], words[5]]
+    })
+
+    let crates = []
+
+    const findCratesAtOriginal = (x) => {
+        return crates.filter(c=>c.original[0]===x)
+    }
+    const findCratesAtCurrent = (x,n)=>{
+        return crates.filter(c=>c.match(x,n))
+    }
+    const findCratesAtFuture = (y) => {
+        return crates.filter(c=>c.current[0]===y)
+    }
+    const incrementCratesAtFuture = (n,y) => {
+        const _crates = findCratesAtFuture(y)
+
+        _crates.forEach(c=>{
+            c.current[1]=c.current[1]+n
+        })
+    }
+
+    const decreaseCratesAtCurrent = (x,n) => {
+        const _crates = findCratesAtFuture(x)
+
+        _crates.forEach(c=>{
+            c.current[1]=c.current[1]-n
+        })
+    }
+    const createCrates = (x,n,t) => {
+        if(t <1) return []
+        const originalCrates = findCratesAtOriginal(x).sort((a,b)=>{
+            return  b.original[1] - a.original[1]
+        })
+
+        const start = originalCrates[0]?.original[1] ? originalCrates[0]?.original[1] : 0
+        const _crates = []
+        for (let i = 1; i <= t; i++) {
+            _crates.push(new Crate([x,start+i]))
+        }
+        return _crates
+    }
+
+    const CrateMover9000 = (n,x,y) => {
+
+
+        const foundCrates = findCratesAtCurrent(x,n).sort((a,b)=>{
+            return  a.current[1] - b.current[1]
+        })
+
+        const t = n - foundCrates.length
+        const newCrates = createCrates(x,n,t)
+
+        const totalCrates = [...foundCrates,...newCrates]
+        incrementCratesAtFuture(n,y)
+        for (let i = 1; i <= n; i++) {
+            totalCrates[i-1].move([y,n+1-i])
+        }
+        decreaseCratesAtCurrent(x,n)
+
+        crates = [...crates, ...newCrates]
+
+    }
+
+    reducedInstructions.forEach(_i => {
+        const i = _i.map(n => parseInt(n))
+        CrateMover9000(i[0], i[1], i[2])
+    })
+
+    for (let i = 1; i <= 9; i++) {
+        const _crate = findCratesAtFuture(i).sort((a,b)=>{
+            return a.current[1] - b.current[1]
+        })[0]
+
+        console.log(_crate)
+
+    }
+
+
 }
 
 
