@@ -12,6 +12,8 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
 
 class Crate {
 
+
+    //original and current have coordinates [a,b] where a is column b is position in stack.
     original
     current
 
