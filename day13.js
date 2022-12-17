@@ -7,6 +7,7 @@ fs.readFile('input.txt', 'utf-8', (err, data) => {
     }
 
     solve(data.split('\n\n'))
+
     solve2(data.replace(/10/g, 9).split('\n\n'))
 })
 
@@ -27,7 +28,6 @@ const solve2 = (input) => {
     const start = all.findIndex(p=>JSON.stringify(p) === '[[2]]') + 1
 
     const end = all.findIndex(p=>JSON.stringify(p) === '[[6]]') + 1
-
 
     console.log((start)*(end))
 
