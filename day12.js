@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-fs.readFile('input.txt', 'utf-8', (err, data) => {
+fs.readFile('input2.txt', 'utf-8', (err, data) => {
     if (err) {
         console.error(err);
         return;
@@ -182,7 +182,9 @@ const solve = (input) => {
         for (const graphVerticesKey in graphVertices) {
             //console.log(graphVerticesKey)
             if(graphVertices[graphVerticesKey] === 'b'){
+                console.log(graphVerticesKey, endKey)
                 const dist = findShortestPathWithLogs(graph, graphVerticesKey, endKey).distance
+                break
                 if(dist < minSteps) minSteps = dist
             }
         }
