@@ -130,8 +130,6 @@ const solve = (input) => {
     }
 
 
-    const translatedMap = {}
-
     const flowNodes = {}
     for (const p in nodes) {
 
@@ -204,7 +202,7 @@ const solve = (input) => {
         const sortedKey = JSON.stringify(_visited.slice(1).sort())
 
         if (!visitedMap[sortedKey] || visitedMap[sortedKey].score < score) {
-            visitedMap[JSON.stringify(_visited.slice(1).sort())] = {score, original: _visited.slice(1)}
+            visitedMap[sortedKey] = {score, original: _visited.slice(1)}
         }
 
         if (score > maxScore) {

@@ -165,7 +165,6 @@ const solve = (input) => {
                 if (manhattanDistance(...a2, coords[0], coords[1]) <= dist2) {
                     delete possibleMap[a2Key]
                 }
-
                 if (manhattanDistance(...a3, coords[0], coords[1]) <= dist2) {
                     delete possibleMap[a3Key]
                 }
